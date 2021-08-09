@@ -17,3 +17,19 @@
 
 ## When?
 - By scheduling this Lambda function to run every day before the end of the business day (before 4pm?).
+
+## Configuration
+Need to add some IAM permission in AWS Lamdba function configuration:
+```{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "cloudtrail:LookupEvents"
+            ],
+            "Resource": "*"
+        }
+    ]
+}```

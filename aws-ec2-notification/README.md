@@ -32,4 +32,4 @@ Need to add some IAM permission in AWS Lamdba function configuration:
             "Resource": "*"
         }
     ]
-}```
+}

@@ -4,6 +4,7 @@ import ec2 = require('@aws-cdk/aws-ec2');
 import ecrAssets = require('@aws-cdk/aws-ecr-assets');
 import ecs = require('@aws-cdk/aws-ecs');
 import * as iam from '@aws-cdk/aws-iam';
+import { Bucket } from '@aws-cdk/aws-s3';
 import { CfnOutput } from '@aws-cdk/core';
 
 interface BatchStackProps extends cdk.StackProps {
@@ -32,6 +33,9 @@ export class AwsBatchStack extends cdk.Stack {
     instanceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
 
     instanceRole.addToPrincipalPolicy(new iam.PolicyStatement({ resources: ['*'], actions: ['sts:AssumeRole'] }));
+    const bucket = Bucket.fromBucketName(this, 'elevation-hillshades', 'elevation-hillshades');
+    bucket.grantRead(instanceRole);
+    bucket.grantPut(instanceRole);
     new iam.CfnInstanceProfile(this, 'BatchInstanceProfile', {
       instanceProfileName: instanceRole.roleName,
       roles: [instanceRole.roleName],

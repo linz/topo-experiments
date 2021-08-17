@@ -9,11 +9,11 @@ const batch = new sdk.Batch();
 const JobDefinitionArn = 'JobDefinitionArn';
 const JobQueueArn = 'JobQueueArn';
 
-const ReadFromRoleArn = 'Read Arn of bucket where data to read from is location'
-const ReadFromBucket = 's3://read-top-level-bucket/'
-const ReadFromFolder = 's3://read-top-level-bucket/specific-folder/'
-const WriteToRoleArn = 'Write Arn of write location bucket'
-const WriteToFolder = 's3://write-top-level-bucket/specific-folder/'
+const ReadFromRoleArn = 'arn:aws:iam::XXXXXXX'
+const ReadFromBucket = 's3://bucket/'
+const ReadFromFolder = 's3://bucket/folder/'
+
+const WriteToFolder = 's3://bucket/folder/'
 // END USER INPUT
 
 const sourceCredentials = new sdk.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE });
@@ -43,7 +43,10 @@ async function main(): Promise<void> {
         upload_count++
         fileList = ''
       }
-      const string = file_name.replace('s3://', '/vsis3/') + ',' + WriteToFolder.concat(basename(file_name)).replace('.tif', '.tiff') + ';'
+      const from = file_name.replace('s3://', '/vsis3/'); 
+      const to = WriteToFolder.concat(basename(file_name).replace('.tif', '.tiff'));
+      const base = basename(file_name).replace('.tif', '.tiff')
+      const string = from + ',' + to + ',' + base + ';'
       fileList = fileList.concat(string)
       count++
     }
@@ -62,7 +65,7 @@ async function submit(correlationId: string, job_name: string, fileList: string)
       jobDefinition: JobDefinitionArn,
       containerOverrides: {
         memory: 128,
-        command: [fileList, ReadFromRoleArn, WriteToRoleArn],
+        command: [fileList, ReadFromRoleArn],
         environment,
       },
     })

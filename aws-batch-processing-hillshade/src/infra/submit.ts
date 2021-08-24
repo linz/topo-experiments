@@ -35,20 +35,34 @@ async function main(): Promise<void> {
   let count = 0
   let upload_count = 1
   let fileList = ''
-  for await (const file_name of fsa.list(ReadFromFolder)) {
+  let from = ''
+  let to = ''
+  let base = ''
+  let string = ''
+  for await (let file_name of fsa.list(ReadFromFolder)) {
+    // let re = /\ /gi;
+    // file_name = file_name.replace(re, '\\ ')
     if (file_name.endsWith('.tif') || file_name.endsWith('.tiff')) {
-      if (count == 10) {
-        submit(correlationId, 'upload-' + upload_count, fileList)
-        count = 0
-        upload_count++
-        fileList = ''
-      }
-      const from = file_name.replace('s3://', '/vsis3/'); 
-      const to = WriteToFolder.concat(basename(file_name).replace('.tif', '.tiff'));
-      const base = basename(file_name).replace('.tif', '.tiff')
-      const string = from + ',' + to + ',' + base + ';'
+      from = file_name.replace('s3://', '/vsis3/'); 
+      to = WriteToFolder.concat(basename(file_name).replace('.tif', '.tiff'));
+      base = basename(file_name).replace('.tif', '.tiff')
+      string = from + ',' + to + ',' + base + ';'
       fileList = fileList.concat(string)
       count++
+    }
+    if  (file_name.endsWith('.asc')) {
+      from = file_name.replace('s3://', '/vsis3/'); 
+      to = WriteToFolder.concat(basename(file_name).replace('.asc', '.tiff'));
+      base = basename(file_name).replace('.asc', '.tiff')
+      string = from + ',' + to + ',' + base + ';'
+      fileList = fileList.concat(string)
+      count++
+    }
+    if (count == 25) {
+      submit(correlationId, 'upload-' + upload_count, fileList)
+      count = 0
+      upload_count++
+      fileList = ''
     }
   }
   if (count > 0) {

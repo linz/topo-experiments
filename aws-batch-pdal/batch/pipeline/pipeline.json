@@ -1,0 +1,15 @@
+{
+	"pipeline": [
+		{
+            "type" : "readers.las"
+        },
+		{
+			"type": "filters.range",
+			"limits": "Classification[6:6]"
+		},
+		{	
+			"type": "writers.las",
+			"forward" : "all"
+		}
+	]
+}

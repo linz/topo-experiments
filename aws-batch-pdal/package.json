@@ -1,0 +1,45 @@
+{
+  "name": "@linzjs/template-aws-batch",
+  "version": "0.0.1",
+  "main": "build/src/index.js",
+  "types": "build/src/index.d.ts",
+  "repository": "git@github.com:linz/template-aws-batch",
+  "license": "MIT",
+  "author": {
+    "name": "Land Information New Zealand",
+    "url": "https://linz.govt.nz",
+    "organization": true
+  },
+  "devDependencies": {
+    "@aws-cdk/aws-batch": "^1.120.0",
+    "@aws-cdk/aws-ecs": "^1.120.0",
+    "@aws-cdk/aws-iam": "^1.120.0",
+    "@aws-cdk/aws-s3": "^1.120.0",
+    "@aws-cdk/core": "^1.120.0",
+    "@linz/accounts": "^1.2.0",
+    "@linzjs/style": "^2.1.5",
+    "@types/node": "^16.6.1",
+    "aws-cdk": "^1.120.0",
+    "aws-sdk": "^2.955.0",
+    "conventional-changelog-cli": "^2.1.1",
+    "ulid": "^2.3.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "lint": "npx eslint {src/**,*.js}",
+    "test": "echo No tests yet",
+    "submit": "node build/src/infra/submit.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build/src/**"
+  ],
+  "dependencies": {
+    "@aws-cdk/aws-events-targets": "^1.120.0",
+    "@linzjs/s3fs": "^6.7.0",
+    "yarn": "^1.22.11"
+  }
+}

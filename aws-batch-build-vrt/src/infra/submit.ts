@@ -5,12 +5,13 @@ const batch = new sdk.Batch();
 
 // USER INPUT
 const JobDefinitionArn = 'JobDefinitionArn';
-const JobQueueArn = 'JobDefinitionArn';
+const JobQueueArn = 'JobQueueArn';
 
-const ReadFromRoleArn = 'arn:aws:iam::XXXXXX'
-const ReadFromFolder = 's3://bucket/folder/'
-const OutputTiffName = 's3://bucket/folder/name.tiff'
-
+const ReadFromRoleArn = 'arn:aws:iam::XXXXXXXXX:role/role-name'
+const ReadFromBucket = 'bucket-name'
+const ReadFromFolder = 'path/to/folder/'
+const OutputTiffName = 's3://bucket-name/path/to/folder/filename.tiff'
+// END USER INPUT
 
 async function main(): Promise<void> {
   const correlationId = ulid.ulid();
@@ -27,7 +28,7 @@ async function submit(correlationId: string) {
       jobDefinition: JobDefinitionArn,
       containerOverrides: {
         memory: 128,
-        command: [ReadFromRoleArn, ReadFromFolder, OutputTiffName],
+        command: [ReadFromRoleArn, ReadFromBucket, ReadFromFolder, OutputTiffName],
         environment,
       },
     })

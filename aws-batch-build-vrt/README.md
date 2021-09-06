@@ -54,12 +54,13 @@ const JobDefinitionArn = 'JobDefinitionArn';
 const JobQueueArn = 'JobQueueArn';
 ```
 
-edit lines 12 - 16 of `src/infra/submit.ts`:
+edit lines 10 - 14 of `src/infra/submit.ts`:
 ```javascript
 // USER INPUT
-const ReadFromRoleArn = 'arn:aws:iam::XXXXXX'
-const ReadFromFolder = 's3://bucket/folder/'
-const OutputTiffName = 's3://bucket/folder/name.tiff'
+const ReadFromRoleArn = 'arn:aws:iam::XXXXXXXXX:role/role-name'
+const ReadFromBucket = 'bucket-name'
+const ReadFromFolder = 'path/to/folder/'
+const OutputTiffName = 's3://bucket-name/path/to/folder/filename.tiff'
 
 // END USER INPUT
 ```

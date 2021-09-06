@@ -1,14 +1,18 @@
 FROM osgeo/gdal:ubuntu-small-latest
 
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
-
 # install awscli
 RUN apt update && apt install awscli -y
 
 # install jq
 RUN apt-get install jq -y
 
-# add script
-add ./script.sh ./app/script.sh
+# install boto3
+RUN apt-get install python3-pip -y
+RUN pip install boto3 -t /app/
 
-entrypoint ["bash", "./app/script.sh"]
+# install linz-logger
+RUN pip install linz-logger
+
+# add scripts
+ADD ./script.py /app/script.py
+ENTRYPOINT ["python", "/app/script.py"]

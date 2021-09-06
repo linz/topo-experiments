@@ -19,8 +19,11 @@ do
     if [ -n ${file_info[0]} ]
     then
         gdaldem hillshade ${file_info[0]} $tmp_dir/${file_info[2]}
+        echo {"message": "hillshade processed", "from": ${file_info[0]}, "to": $tmp_dir/${file_info[2]}}
     fi
 done
+echo {"message": "gdaldem hillshade complete"}
+
 unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 for element in ${file_list[@]}
 do
@@ -28,5 +31,7 @@ do
     if [ -n ${file_info[0]} ]
     then
         aws s3 cp $tmp_dir/${file_info[2]} ${file_info[1]}
+        echo {"message": "hillshade uploaded", "return code": $?, "from": $tmp_dir/${file_info[2]}, "to": ${file_info[1]}}
     fi
 done
+echo {"message": "job complete"}

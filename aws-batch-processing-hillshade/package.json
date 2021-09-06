@@ -1,9 +1,9 @@
 {
-  "name": "@linzjs/template-javascript-hello-world",
+  "name": "@linzjs/template-aws-batch",
   "version": "0.0.1",
   "main": "build/src/index.js",
   "types": "build/src/index.d.ts",
-  "repository": "git@github.com:linz/template-javascript-hello-world.git",
+  "repository": "git@github.com:linz/template-aws-batch",
   "license": "MIT",
   "author": {
     "name": "Land Information New Zealand",
@@ -11,15 +11,21 @@
     "organization": true
   },
   "devDependencies": {
-    "@linzjs/style": "^3.0.0",
-    "@types/jest": "^26.0.24",
-    "conventional-changelog-cli": "^2.1.1"
+    "@aws-cdk/aws-batch": "^1.115.0",
+    "@aws-cdk/aws-ecs": "^1.115.0",
+    "@aws-cdk/core": "^1.115.0",
+    "@linzjs/style": "^2.1.5",
+    "aws-cdk": "^1.115.0",
+    "aws-sdk": "^2.955.0",
+    "conventional-changelog-cli": "^2.1.1",
+    "ulid": "^2.3.0"
   },
   "scripts": {
     "build": "tsc",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "lint": "npx eslint {src/**,*.js}",
-    "test": "echo No tests yet"
+    "test": "echo No tests yet",
+    "submit": "node build/src/infra/submit.js"
   },
   "publishConfig": {
     "access": "public"
@@ -28,13 +34,6 @@
     "build/src/**"
   ],
   "dependencies": {
-    "@aws-cdk/assert": "^1.117.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.117.0",
-    "@aws-cdk/core": "^1.117.0",
-    "@slack/webhook": "^6.0.0",
-    "@types/node": "^16.4.13",
-    "aws-cdk": "^1.117.0",
-    "typescript": "^4.3.5",
-    "yarn": "^1.22.11"
+    "@linzjs/s3fs": "^6.5.0"
   }
 }

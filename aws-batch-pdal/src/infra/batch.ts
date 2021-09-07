@@ -35,23 +35,6 @@ export class AwsBatchStack extends cdk.Stack {
 
     instanceRole.addToPrincipalPolicy(new iam.PolicyStatement({ resources: ['*'], actions: ['sts:AssumeRole'] }));
 
-    // For test purpose
-    /* instanceRole.addToPrincipalPolicy(
-      new iam.PolicyStatement({
-        resources: ['arn:aws:s3:::test-lidar', 'arn:aws:s3:::test-lidar/*'],
-        actions: ['s3:GetObject*', 's3:GetBucket*', 's3:List*'],
-        effect: Effect.ALLOW,
-      }),
-    );
-    instanceRole.addToPrincipalPolicy(
-      new iam.PolicyStatement({
-        resources: ['arn:aws:s3:::test-lidar/*'],
-        actions: ['s3:PutObject*', 's3:Abort*'],
-        effect: Effect.ALLOW,
-      }),
-    );
- */ // End
-
     new iam.CfnInstanceProfile(this, 'BatchInstanceProfile', {
       instanceProfileName: instanceRole.roleName,
       roles: [instanceRole.roleName],
@@ -75,11 +58,13 @@ export class AwsBatchStack extends cdk.Stack {
 
     //Test bucket and role to access to it
     const bucket = Bucket.fromBucketName(this, 'imported-bucket-from-name', 'test-lidar');
-
+    // Write permissions for the system
+    bucket.grantReadWrite(instanceRole);
+    // Read permissions for LINZ internal users
     const roRole = AwsRole.organization(this, 'LINZReadRole', { roleName: 'internal-user-read' });
     bucket.grantRead(roRole);
-    new CfnOutput(this, 'LINZRoleReadArn', { value: roRole.roleArn });
 
+    new CfnOutput(this, 'LINZRoleReadArn', { value: roRole.roleArn });
     new CfnOutput(this, 'BatchJobArn', { value: job.jobDefinitionArn });
     new CfnOutput(this, 'BatchQueueArn', { value: queue.jobQueueArn });
   }
